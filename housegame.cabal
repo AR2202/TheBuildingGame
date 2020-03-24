@@ -1,0 +1,72 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 17cb6b8924336390fca5b4c367077e31a16b6b704033c0acb67cf1f1366d3ace
+
+name:           housegame
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/annika/housegame#readme>
+homepage:       https://github.com/annika/housegame#readme
+bug-reports:    https://github.com/annika/housegame/issues
+author:         annika
+maintainer:     annika.rings@freenet.de
+copyright:      GPL
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/annika/housegame
+
+library
+  exposed-modules:
+      Game
+      Lib
+      Logic
+      Rendering
+      Suggestions
+  other-modules:
+      Paths_housegame
+  hs-source-dirs:
+      src
+  build-depends:
+      array
+    , base >=4.7 && <5
+    , gloss
+  default-language: Haskell2010
+
+executable housegame-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_housegame
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      array
+    , base >=4.7 && <5
+    , gloss
+    , housegame
+  default-language: Haskell2010
+
+test-suite housegame-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_housegame
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      array
+    , base >=4.7 && <5
+    , gloss
+    , housegame
+  default-language: Haskell2010
