@@ -16,12 +16,6 @@ full :: [Cell] -> Maybe Player
 full (cell@(Just player):cells) | all (== cell) cells = Just player
 full _                                                = Nothing
 
--- winner :: Board -> Maybe Player
--- winner board = asum $ map full $ rows ++ cols ++ diags
---     where rows  = [[board ! (i,j) | i <- [0..n-1]] | j <- [0..n-1]]
---           cols  = [[board ! (j,i) | i <- [0..n-1]] | j <- [0..n-1]]
---           diags = [[board ! (i,i) | i <- [0..n-1]]
---                   ,[board ! (i,j) | i <- [0..n-1], let j = n-1-i ]]
 
 winner2 :: Board -> Board -> Maybe (Winning)
 winner2 board solution
@@ -62,7 +56,7 @@ mousePosAsCellCoord (x, y) = ( floor ((y + (fromIntegral screenHeight * 0.5)) / 
 transformGame (EventKey (MouseButton LeftButton) Up _ mousePos) game =
     case gameState game of
       Running -> playerTurn game $ mousePosAsCellCoord mousePos
-      GameOver _ -> initialGame
+      GameOver _ -> initialGame (nextSolutions game)
 transformGame _ game = game
 
 

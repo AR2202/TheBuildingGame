@@ -18,7 +18,7 @@ shapeColor PlayerO = triangleColor
 shapeColor PlayerY = triangleRColor
 shapeColor PlayerW = triangleRColor
 
-boardAsRunningPicture board player =
+boardAsRunningPicture game  =
     pictures [ color squareColor $ squareCellsOfBoard board
              , color triangleColor $ triangleCellsOfBoard board
              , color triangleRColor $ triangleRCellsOfBoard board
@@ -27,10 +27,13 @@ boardAsRunningPicture board player =
              , color (shapeColor player) $ indicationSquare (indicationPicture player)
              , color triangleColor $ indicationText textPicture
              , color triangleColor $ suggestedText textSuggested
-             , color triangleColor $ pictures $ suggested (suggestedPicture playerlist2) (suggestedpos 5 4)
+             , color triangleColor $ pictures $ suggested (suggestedPicture solutionshapes) (suggestedpos 5 4)
              
              , color boardGridColor $ boardGrid
              ]
+  where board = gameBoard game
+        solutionshapes = solutionShapes game
+        player = gamePlayer game
 
 outcomeColor Winning = triangleColor
 outcomeColor Losing = tieColor
@@ -86,6 +89,9 @@ textPicture = scale 0.18 0.18 $ text "next shape"
 
 textSuggested :: Picture
 textSuggested = scale 0.18 0.18 $ text "build this:"
+
+textNext :: Picture
+textNext = scale 0.18 0.18 $ text "Next game"
 
 
 textGameOver ::Winning ->  Picture
@@ -169,7 +175,7 @@ gamePlayer2ShapeFunction (Just PlayerY) = trianglePicR
 gamePlayer2ShapeFunction (Just PlayerW) = windowPic
 gamePlayer2ShapeFunction Nothing = noPic
 
-boardAsPicture board winning=
+boardAsPicture game winning=
     pictures [ squareCellsOfBoard board
              , triangleCellsOfBoard board
              , triangleRCellsOfBoard board
@@ -177,16 +183,18 @@ boardAsPicture board winning=
              , windowCellsOfBoard board
              , color freeFieldColor $freeFields freeFieldPicture
              , indicationText (textGameOver winning)
-             , pictures $ suggested (suggestedPicture playerlist2)  (suggestedpos 5 4)
+              , color triangleColor $ suggestedText textNext
+             , pictures $ suggested (suggestedPicture solutionshapes)  (suggestedpos 5 4)
              ,  color boardGridColor $boardGrid
              ]
-
-boardAsGameOverPicture winning board = color (outcomeColor winning) (boardAsPicture board winning)
+  where board = gameBoard game
+        solutionshapes = solutionShapes game
+boardAsGameOverPicture winning game = color (outcomeColor winning) (boardAsPicture game winning)
 
 gameAsPicture :: Game -> Picture
 gameAsPicture game = translate (fromIntegral screenWidth * (-0.5))
                                (fromIntegral screenHeight * (-0.5))
                                frame
     where frame = case gameState game of
-                    Running -> boardAsRunningPicture (gameBoard game) (gamePlayer game)
-                    GameOver winner -> boardAsGameOverPicture winner (gameBoard game) 
+                    Running -> boardAsRunningPicture game 
+                    GameOver winning -> boardAsGameOverPicture winning game
