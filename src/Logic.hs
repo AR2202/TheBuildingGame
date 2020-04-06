@@ -48,6 +48,15 @@ playerTurn game cellCoord
     where board = gameBoard game
           player = gamePlayer game
 
+removeShape :: Game -> (Int, Int) -> Game
+removeShape game cellCoord
+    | isCoordCorrect cellCoord  =
+        checkGameOver2
+        $ game { gameBoard = board // [(cellCoord, Nothing)] }
+    | otherwise = game
+    where board = gameBoard game
+         
+
 mousePosAsCellCoord :: (Float, Float) -> (Int, Int)
 mousePosAsCellCoord (x, y) = ( floor ((y + (fromIntegral screenHeight * 0.5)) / cellHeight)
                              , floor ((x + (fromIntegral screenWidth * 0.5)) / cellWidth)
@@ -57,6 +66,11 @@ transformGame (EventKey (MouseButton LeftButton) Up _ mousePos) game =
     case gameState game of
       Running -> playerTurn game $ mousePosAsCellCoord mousePos
       GameOver _ -> initialGame (nextSolutions game)
+      
+transformGame (EventKey (MouseButton RightButton) Up _ mousePos) game =
+  case gameState game of
+    Running -> removeShape game $ mousePosAsCellCoord mousePos
+    GameOver _ -> initialGame (nextSolutions game)
 transformGame _ game = game
 
 

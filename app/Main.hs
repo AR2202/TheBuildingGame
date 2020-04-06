@@ -7,7 +7,7 @@ import Game
 import Logic
 import Rendering
 
-window = InWindow "The house Game" (screenWidth, screenHeight) (100, 100)
+window = InWindow "The building Game" (screenWidth, screenHeight) (100, 100)
 backgroundColor = makeColor 0 0 0 255
 
 main :: IO ()

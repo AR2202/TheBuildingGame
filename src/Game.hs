@@ -76,5 +76,11 @@ playerlist5 = [Just PlayerX, Just PlayerX, Just PlayerO, Nothing, Nothing,Just P
 
 playerlist6 = [Just PlayerX, Just PlayerO, Nothing, Nothing, Nothing,Just PlayerX, Just PlayerX, Just PlayerO, Nothing,Nothing,Just PlayerX, Just PlayerX, Just PlayerX, Nothing, Nothing,Just PlayerX, Just PlayerW, Just PlayerY,Nothing,Nothing]
 
+playerlist7 = [Just PlayerX, Just PlayerX, Just PlayerX, Just PlayerO, Nothing, Just PlayerX, Just PlayerW, Just PlayerX, Just PlayerX, Just PlayerO, Just PlayerX, Just PlayerX,Just PlayerX,Just PlayerW, Just PlayerY, Just PlayerX, Just PlayerX, Just PlayerX, Just PlayerY, Nothing]
 
-solutionlist = concat $ repeat [playerlist1, playerlist2, playerlist3, playerlist4, playerlist5, playerlist6]
+playerlist8 = [Just PlayerX, Just PlayerX, Just PlayerX, Just PlayerO, Nothing, Just PlayerX, Just PlayerX, Just PlayerX, Just PlayerW, Just PlayerO, Just PlayerW, Just PlayerX,Just PlayerW,Just PlayerX, Just PlayerY, Just PlayerX, Just PlayerX, Just PlayerX, Just PlayerY, Nothing]
+
+playerlist9 = [Just PlayerX, Just PlayerX, Just PlayerX, Just PlayerO, Nothing, Just PlayerX, Just PlayerX, Just PlayerX, Just PlayerW, Just PlayerO, Just PlayerX, Just PlayerX,Just PlayerX,Just PlayerW, Just PlayerY, Just PlayerX, Just PlayerX, Just PlayerX, Just PlayerY, Just PlayerX]
+
+
+solutionlist = concat $ repeat [playerlist7,playerlist1, playerlist2, playerlist8,playerlist9,playerlist3, playerlist4, playerlist5, playerlist6]
