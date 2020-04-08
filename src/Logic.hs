@@ -10,9 +10,9 @@ isCoordCorrect = inRange ((0, 0), (n - 1, n - 2))
 
 
 
-switchPlayer' game = game {gamePlayer = head (shapeList game), shapeList = tail (shapeList game)}
+switchShape' game = game {gameShape = head (shapeList game), shapeList = tail (shapeList game)}
 
-full :: [Cell] -> Maybe Player
+full :: [Cell] -> Maybe Shape
 full (cell@(Just player):cells) | all (== cell) cells = Just player
 full _                                                = Nothing
 
@@ -42,11 +42,11 @@ playerTurn :: Game -> (Int, Int) -> Game
 playerTurn game cellCoord
     | isCoordCorrect cellCoord && board ! cellCoord == Nothing =
         checkGameOver2
-        $ switchPlayer'
+        $ switchShape'
         $ game { gameBoard = board // [(cellCoord, Just player)] }
     | otherwise = game
     where board = gameBoard game
-          player = gamePlayer game
+          player = gameShape game
 
 removeShape :: Game -> (Int, Int) -> Game
 removeShape game cellCoord

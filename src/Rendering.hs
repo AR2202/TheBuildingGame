@@ -13,10 +13,10 @@ triangleRColor = makeColorI 50 255 50 255
 freeFieldColor = makeColorI 255 255 255 255
 tieColor = greyN 0.5
 
-shapeColor PlayerX = squareColor
-shapeColor PlayerO = triangleColor
-shapeColor PlayerY = triangleRColor
-shapeColor PlayerW = triangleRColor
+shapeColor Square = squareColor
+shapeColor LTriangle = triangleColor
+shapeColor RTriangle = triangleRColor
+shapeColor Window = triangleRColor
 
 boardAsRunningPicture game  =
     pictures [ color squareColor $ squareCellsOfBoard board
@@ -33,7 +33,7 @@ boardAsRunningPicture game  =
              ]
   where board = gameBoard game
         solutionshapes = solutionShapes game
-        player = gamePlayer game
+        player = gameShape game
 
 outcomeColor Winning = triangleColor
 outcomeColor Losing = tieColor
@@ -64,17 +64,17 @@ freeFields picture = translate x y picture
         y = fromIntegral 2 * cellHeight + cellHeight * 0.5
 
 --indicationPicture :: Picture
-indicationPicture PlayerX= squareCell
+indicationPicture Square= squareCell
  
-indicationPicture PlayerO= triangleCellL
+indicationPicture LTriangle= triangleCellL
   
-indicationPicture PlayerY= triangleCellR
+indicationPicture RTriangle= triangleCellR
  
-indicationPicture PlayerW= windowCell
+indicationPicture Window= windowCell
   
 
-suggestedPicture :: [Maybe Player]->[Picture]
-suggestedPicture playerlist=  map ($smallPicWidth) $ map gamePlayer2ShapeFunction playerlist
+suggestedPicture :: [Maybe Shape]->[Picture]
+suggestedPicture playerlist=  map ($smallPicWidth) $ map gameShape2ShapeFunction playerlist
 
 
 suggestedpos nrows ncols = [ (base + (0.5+c)*smallPicWidth ,(0.5+r)*smallPicHeight)| c<-[0..ncols-1],r<-[0..nrows-1]] 
@@ -145,16 +145,16 @@ indicatorCellOfBoad board cellPicture =
   undefined
 
 squareCellsOfBoard :: Board -> Picture
-squareCellsOfBoard board = cellsOfBoard board (Just PlayerX) squareCell
+squareCellsOfBoard board = cellsOfBoard board (Just Square) squareCell
 
 windowCellsOfBoard :: Board -> Picture
-windowCellsOfBoard board = cellsOfBoard board (Just PlayerW) windowCell
+windowCellsOfBoard board = cellsOfBoard board (Just Window) windowCell
 
 triangleCellsOfBoard :: Board -> Picture
-triangleCellsOfBoard board = cellsOfBoard board (Just PlayerO) triangleCellL
+triangleCellsOfBoard board = cellsOfBoard board (Just LTriangle) triangleCellL
 
 triangleRCellsOfBoard :: Board -> Picture
-triangleRCellsOfBoard board = cellsOfBoard board (Just PlayerY) triangleCellR
+triangleRCellsOfBoard board = cellsOfBoard board (Just RTriangle ) triangleCellR
 
 boardGrid :: Picture
 boardGrid =
@@ -169,11 +169,11 @@ boardGrid =
       [0.0 .. fromIntegral n]
 
 
-gamePlayer2ShapeFunction (Just PlayerX) = squarePic
-gamePlayer2ShapeFunction (Just PlayerO) = trianglePicL
-gamePlayer2ShapeFunction (Just PlayerY) = trianglePicR
-gamePlayer2ShapeFunction (Just PlayerW) = windowPic
-gamePlayer2ShapeFunction Nothing = noPic
+gameShape2ShapeFunction (Just Square) = squarePic
+gameShape2ShapeFunction (Just LTriangle) = trianglePicL
+gameShape2ShapeFunction (Just RTriangle) = trianglePicR
+gameShape2ShapeFunction (Just Window) = windowPic
+gameShape2ShapeFunction Nothing = noPic
 
 boardAsPicture game winning=
     pictures [ squareCellsOfBoard board
