@@ -13,7 +13,7 @@ isCoordCorrect = inRange ((0, 0), (n - 1, n - 2))
 switchShape' game = game {gameShape = head (shapeList game), shapeList = tail (shapeList game)}
 
 full :: [Cell] -> Maybe Shape
-full (cell@(Just player):cells) | all (== cell) cells = Just player
+full (cell@(Just shape):cells) | all (== cell) cells = Just shape
 full _                                                = Nothing
 
 
@@ -43,10 +43,10 @@ playerTurn game cellCoord
     | isCoordCorrect cellCoord && board ! cellCoord == Nothing =
         checkGameOver2
         $ switchShape'
-        $ game { gameBoard = board // [(cellCoord, Just player)] }
+        $ game { gameBoard = board // [(cellCoord, Just shape)] }
     | otherwise = game
     where board = gameBoard game
-          player = gameShape game
+          shape = gameShape game
 
 removeShape :: Game -> (Int, Int) -> Game
 removeShape game cellCoord

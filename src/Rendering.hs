@@ -74,7 +74,7 @@ indicationPicture Window= windowCell
   
 
 suggestedPicture :: [Maybe Shape]->[Picture]
-suggestedPicture playerlist=  map ($smallPicWidth) $ map gameShape2ShapeFunction playerlist
+suggestedPicture shapelist=  map ($smallPicWidth) $ map gameShape2ShapeFunction shapelist
 
 
 suggestedpos nrows ncols = [ (base + (0.5+c)*smallPicWidth ,(0.5+r)*smallPicHeight)| c<-[0..ncols-1],r<-[0..nrows-1]] 

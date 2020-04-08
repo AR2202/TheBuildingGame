@@ -27,7 +27,7 @@ data Game = Game { gameBoard :: Board
 n :: Int
 n = 5
 
-shapeList1 = concat $ repeat $ [Square,LTriangle, Square,RTriangle, Square,Window,Square]
+
 screenWidth :: Int
 screenWidth = 640
 
@@ -62,7 +62,7 @@ initialGame solutionshapeslist = Game { gameBoard = array indexRange $ zip (rang
 transposed :: [(a,b)]->[(b,a)]
 transposed tuplelist = map swap tuplelist
 
-solution playerlist = array indexRange $ zip (transposed (range indexRange))(playerlist ++ repeat Nothing)
+solution shapelist = array indexRange $ zip (transposed (range indexRange))(shapelist ++ repeat Nothing)
     where indexRange = ((0, 0), (n - 1, n - 1))
 
 randomGenStd = mkStdGen 42 
@@ -74,23 +74,23 @@ solution2shapelist randomgen playerlist = shuffle' shapeslist (length shapeslist
   where shapeslist = extractfrommaybes playerlist
 --suggestions for building
 
-playerlist1 = [Just Square, Just Square, Just LTriangle, Nothing, Nothing,Just Square, Just Square, Just Window, Just LTriangle, Nothing,Just Square, Just Square, Just Window, Just RTriangle, Nothing,Just Square, Just Square, Just RTriangle,Nothing,Nothing]
+shapelist1 = [Just Square, Just Square, Just LTriangle, Nothing, Nothing,Just Square, Just Square, Just Window, Just LTriangle, Nothing,Just Square, Just Square, Just Window, Just RTriangle, Nothing,Just Square, Just Square, Just RTriangle,Nothing,Nothing]
 
-playerlist2 = [Just Square, Just Square, Just LTriangle, Nothing, Nothing,Just Square, Just Square, Just RTriangle, Nothing, Nothing, Just Square, Just Window, Just LTriangle, Nothing, Nothing, Just Square, Just Square, Just RTriangle, Nothing,Nothing]
+shapelist2 = [Just Square, Just Square, Just LTriangle, Nothing, Nothing,Just Square, Just Square, Just RTriangle, Nothing, Nothing, Just Square, Just Window, Just LTriangle, Nothing, Nothing, Just Square, Just Square, Just RTriangle, Nothing,Nothing]
 
-playerlist3 = [Just Square, Just LTriangle, Nothing, Nothing, Nothing,Just Square, Just RTriangle, Nothing, Nothing, Nothing, Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Square,Just Window, Just RTriangle, Nothing]
+shapelist3 = [Just Square, Just LTriangle, Nothing, Nothing, Nothing,Just Square, Just RTriangle, Nothing, Nothing, Nothing, Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Square,Just Window, Just RTriangle, Nothing]
 
-playerlist4 = [Just Square, Just Square, Just LTriangle, Nothing, Nothing,Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Window, Just RTriangle, Nothing, Nothing, Just Square, Just RTriangle,Nothing, Nothing, Nothing]
+shapelist4 = [Just Square, Just Square, Just LTriangle, Nothing, Nothing,Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Window, Just RTriangle, Nothing, Nothing, Just Square, Just RTriangle,Nothing, Nothing, Nothing]
 
-playerlist5 = [Just Square, Just Square, Just LTriangle, Nothing, Nothing,Just Square, Just Window, Just Square, Just LTriangle, Nothing,Just Square, Just Window, Just Square, Just RTriangle, Nothing,Just Square, Just Square, Just RTriangle,Nothing,Nothing]
+shapelist5 = [Just Square, Just Square, Just LTriangle, Nothing, Nothing,Just Square, Just Window, Just Square, Just LTriangle, Nothing,Just Square, Just Window, Just Square, Just RTriangle, Nothing,Just Square, Just Square, Just RTriangle,Nothing,Nothing]
 
-playerlist6 = [Just Square, Just LTriangle, Nothing, Nothing, Nothing,Just Square, Just Square, Just LTriangle, Nothing,Nothing,Just Square, Just Square, Just Square, Nothing, Nothing,Just Square, Just Window, Just RTriangle,Nothing,Nothing]
+shapelist6 = [Just Square, Just LTriangle, Nothing, Nothing, Nothing,Just Square, Just Square, Just LTriangle, Nothing,Nothing,Just Square, Just Square, Just Square, Nothing, Nothing,Just Square, Just Window, Just RTriangle,Nothing,Nothing]
 
-playerlist7 = [Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Window, Just Square, Just Square, Just LTriangle, Just Square, Just Square,Just Square,Just Window, Just RTriangle, Just Square, Just Square, Just Square, Just RTriangle, Nothing]
+shapelist7 = [Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Window, Just Square, Just Square, Just LTriangle, Just Square, Just Square,Just Square,Just Window, Just RTriangle, Just Square, Just Square, Just Square, Just RTriangle, Nothing]
 
-playerlist8 = [Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Square, Just Square, Just Window, Just LTriangle, Just Window, Just Square,Just Window,Just Square, Just RTriangle, Just Square, Just Square, Just Square, Just RTriangle, Nothing]
+shapelist8 = [Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Square, Just Square, Just Window, Just LTriangle, Just Window, Just Square,Just Window,Just Square, Just RTriangle, Just Square, Just Square, Just Square, Just RTriangle, Nothing]
 
-playerlist9 = [Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Square, Just Square, Just Window, Just LTriangle, Just Square, Just Square,Just Square,Just Window, Just RTriangle, Just Square, Just Square, Just Square, Just RTriangle, Just Square]
+shapelist9 = [Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Square, Just Square, Just Window, Just LTriangle, Just Square, Just Square,Just Square,Just Window, Just RTriangle, Just Square, Just Square, Just Square, Just RTriangle, Just Square]
 
 
-solutionlist = concat $ repeat [playerlist7,playerlist1, playerlist2, playerlist8,playerlist9,playerlist3, playerlist4, playerlist5, playerlist6]
+solutionlist = concat $ repeat [shapelist7,shapelist1, shapelist2, shapelist8,shapelist9,shapelist3, shapelist4, shapelist5, shapelist6]
