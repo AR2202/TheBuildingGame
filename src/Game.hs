@@ -67,7 +67,7 @@ solution shapelist = array indexRange $ zip (transposed (range indexRange))(shap
 
 randomGenStd = mkStdGen 42 
 
-extractfrommaybes =  map (fromJust) . (filter isJust)
+extractfrommaybes =  (map fromJust) . (filter isJust)
 
 solution2shapelist randomgen playerlist = shuffle' shapeslist (length shapeslist) randomgen
 

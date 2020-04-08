@@ -14,5 +14,3 @@ main :: IO ()
 main = play window backgroundColor 30 (initialGame solutionlist) gameAsPicture transformGame (const id)
 
 
-windowDisplay :: Display
-windowDisplay = InWindow "Window" (500, 500) (500, 500)

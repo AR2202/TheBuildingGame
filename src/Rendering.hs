@@ -163,10 +163,11 @@ boardGrid =
                               , (i * cellWidth, fromIntegral screenHeight)
                               ]
                        , line [ (0.0,                      i * cellHeight)
-                              , (fromIntegral screenWidth, i * cellHeight)
+                              , ((fromIntegral screenWidth)-cellWidth, i * cellHeight)
                               ]
                        ])
-      [0.0 .. fromIntegral n]
+      [0.0 .. fromIntegral (n-1)]
+
 
 
 gameShape2ShapeFunction (Just Square) = squarePic
