@@ -1,10 +1,13 @@
 module Game where
 import Data.Array
 import Data.Tuple
-
+import Data.Maybe
+import System.Random
+import System.Random.Shuffle
 
 data Winning = Winning|Losing  deriving (Eq, Show)
 data Player = PlayerX | PlayerO | PlayerY | PlayerW deriving (Eq, Show)
+data Shape = Square | LTriangle | RTriangle | Window deriving (Eq,Show)
 type Cell = Maybe Player
 data State = Running | GameOver (Winning) deriving (Eq, Show)
 
@@ -44,9 +47,9 @@ smallPicHeight :: Float
 smallPicHeight = 0.25 * cellHeight
 
 initialGame solutionshapeslist = Game { gameBoard = array indexRange $ zip (range indexRange) (repeat Nothing)
-                   , gamePlayer = PlayerX
+                   , gamePlayer = head shapelist
                    , gameState = Running
-                   , shapeList = shapeList1
+                   , shapeList = tail shapelist
                    , gameSolution = (solution solutionshapes)
                    , solutionShapes = solutionshapes
                    , nextSolutions = nextsolutions
@@ -54,6 +57,7 @@ initialGame solutionshapeslist = Game { gameBoard = array indexRange $ zip (rang
     where indexRange = ((0, 0), (n - 1, n - 1))
           solutionshapes = head solutionshapeslist
           nextsolutions =  tail solutionshapeslist
+          shapelist = concat $repeat$solution2shapelist randomGenStd solutionshapes
 
 transposed :: [(a,b)]->[(b,a)]
 transposed tuplelist = map swap tuplelist
@@ -61,7 +65,13 @@ transposed tuplelist = map swap tuplelist
 solution playerlist = array indexRange $ zip (transposed (range indexRange))(playerlist ++ repeat Nothing)
     where indexRange = ((0, 0), (n - 1, n - 1))
 
+randomGenStd = mkStdGen 42 
 
+extractfrommaybes =  map (fromJust) . (filter isJust)
+
+solution2shapelist randomgen playerlist = shuffle' shapeslist (length shapeslist) randomgen
+
+  where shapeslist = extractfrommaybes playerlist
 --suggestions for building
 
 playerlist1 = [Just PlayerX, Just PlayerX, Just PlayerO, Nothing, Nothing,Just PlayerX, Just PlayerX, Just PlayerW, Just PlayerO, Nothing,Just PlayerX, Just PlayerX, Just PlayerW, Just PlayerY, Nothing,Just PlayerX, Just PlayerX, Just PlayerY,Nothing,Nothing]
