@@ -1,4 +1,6 @@
-module Game where
+{-#Language ScopedTypeVariables#-}
+module Game
+where
 import Data.Array
 import Data.Tuple
 import Data.Maybe
@@ -22,11 +24,16 @@ data Game = Game { gameBoard :: Board
                  , gameSolution :: Board
                  , solutionShapes :: Solution
                  , nextSolutions :: Solutionlist
-                 } deriving (Eq, Show)
+                 , nextRandomGen :: StdGen
+                 } deriving (Show)
 
 n :: Int
 n = 5
 
+randomtest :: IO ()
+randomtest = do
+  (randomnum :: Int) <-randomRIO (0,20)
+  print randomnum
 
 screenWidth :: Int
 screenWidth = 640
@@ -46,18 +53,19 @@ smallPicWidth = 0.25*cellWidth
 smallPicHeight :: Float
 smallPicHeight = 0.25 * cellHeight
 
-initialGame solutionshapeslist = Game { gameBoard = array indexRange $ zip (range indexRange) (repeat Nothing)
+initialGame solutionshapeslist  gen = Game { gameBoard = array indexRange $ zip (range indexRange) (repeat Nothing)
                    , gameShape = head shapelist
                    , gameState = Running
                    , shapeList = tail shapelist
                    , gameSolution = (solution solutionshapes)
                    , solutionShapes = solutionshapes
                    , nextSolutions = nextsolutions
+                   , nextRandomGen = nextGen gen
                    }
     where indexRange = ((0, 0), (n - 1, n - 1))
           solutionshapes = head solutionshapeslist
           nextsolutions =  tail solutionshapeslist
-          shapelist = concat $repeat$solution2shapelist randomGenStd solutionshapes
+          shapelist = concat $repeat$solution2shapelist (currentGen gen) solutionshapes
 
 transposed :: [(a,b)]->[(b,a)]
 transposed tuplelist = map swap tuplelist
@@ -65,8 +73,11 @@ transposed tuplelist = map swap tuplelist
 solution shapelist = array indexRange $ zip (transposed (range indexRange))(shapelist ++ repeat Nothing)
     where indexRange = ((0, 0), (n - 1, n - 1))
 
-randomGenStd = mkStdGen 42 
+randomGenStd = currentGen$ mkStdGen 42 
 
+nextGen = fst . split
+
+currentGen = snd . split
 extractfrommaybes =  (map fromJust) . (filter isJust)
 
 solution2shapelist randomgen playerlist = shuffle' shapeslist (length shapeslist) randomgen

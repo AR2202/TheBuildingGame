@@ -65,12 +65,12 @@ mousePosAsCellCoord (x, y) = ( floor ((y + (fromIntegral screenHeight * 0.5)) / 
 transformGame (EventKey (MouseButton LeftButton) Up _ mousePos) game =
     case gameState game of
       Running -> playerTurn game $ mousePosAsCellCoord mousePos
-      GameOver _ -> initialGame (nextSolutions game)
+      GameOver _ -> initialGame (nextSolutions game) (nextRandomGen game)
       
 transformGame (EventKey (MouseButton RightButton) Up _ mousePos) game =
   case gameState game of
     Running -> removeShape game $ mousePosAsCellCoord mousePos
-    GameOver _ -> initialGame (nextSolutions game)
+    GameOver _ -> initialGame (nextSolutions game) (nextRandomGen game)
 transformGame _ game = game
 
 
