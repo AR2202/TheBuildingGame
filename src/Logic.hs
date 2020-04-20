@@ -5,6 +5,7 @@ import Data.Foldable ( asum )
 
 import Game
 import Graphics.Gloss.Interface.Pure.Game
+import Data.Maybe (fromJust)
 
 isCoordCorrect = inRange ((0, 0), (n - 1, n - 2))
 
@@ -26,7 +27,8 @@ winner2 board solution
 countCells :: Cell -> Board -> Int
 countCells cell = length . filter ((==) cell) . elems
 
-
+getCellShape game cellCoord = board ! cellCoord
+  where board = gameBoard game
 
 checkGameOver2 game 
     | Just Winning <- winner2 board solution =
@@ -50,11 +52,14 @@ playerTurn game cellCoord
 
 removeShape :: Game -> (Int, Int) -> Game
 removeShape game cellCoord
-    | isCoordCorrect cellCoord  =
+    | isCoordCorrect cellCoord && removedShape /= Nothing =
         checkGameOver2
-        $ game { gameBoard = board // [(cellCoord, Nothing)] }
+        
+        $ game { gameBoard = board // [(cellCoord, Nothing)],shapeList= (fromJust removedShape):currentShapes }
     | otherwise = game
     where board = gameBoard game
+          removedShape=getCellShape game cellCoord
+          currentShapes=shapeList game
          
 
 mousePosAsCellCoord :: (Float, Float) -> (Int, Int)
