@@ -79,9 +79,9 @@ nextGen = fst . split
 currentGen = snd . split
 extractfrommaybes =  (map fromJust) . (filter isJust)
 
-solution2shapelist randomgen playerlist = shuffle' shapeslist (length shapeslist) randomgen
+solution2shapelist randomgen maybeshapelist = shuffle' shapeslist (length shapeslist) randomgen
 
-  where shapeslist = extractfrommaybes playerlist
+  where shapeslist = extractfrommaybes maybeshapelist
 --suggestions for building
 
 shapelist1 = [Just Square, Just Square, Just LTriangle, Nothing, Nothing,Just Square, Just Square, Just Window, Just LTriangle, Nothing,Just Square, Just Square, Just Window, Just RTriangle, Nothing,Just Square, Just Square, Just RTriangle,Nothing,Nothing]

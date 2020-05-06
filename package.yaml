@@ -25,6 +25,8 @@ dependencies:
 - gloss
 - random
 - random-shuffle
+- hspec
+- QuickCheck
 
 library:
   source-dirs: src

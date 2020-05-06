@@ -11,7 +11,7 @@ squareColor = makeColorI 255 50 50 255
 triangleColor = makeColorI 50 100 255 255
 triangleRColor = makeColorI 50 255 50 255
 freeFieldColor = makeColorI 255 255 255 255
-tieColor = greyN 0.5
+losingColor = greyN 0.5
 
 shapeColor Square = squareColor
 shapeColor LTriangle = triangleColor
@@ -36,7 +36,7 @@ boardAsRunningPicture game  =
         player = gameShape game
 
 outcomeColor Winning = triangleColor
-outcomeColor Losing = tieColor
+outcomeColor Losing = losingColor
 
 
 snapPictureToCell picture (row, column) = translate x y picture

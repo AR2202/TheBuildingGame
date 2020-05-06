@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ebc984a37fb384cf82fbf01ab785e82d89ec715fbbdf6eb3e6b07ccbfce4fcca
+-- hash: c3deb67bfa4cd53874ce719da45f8ae9764263d88badc862e04ebf0828881d36
 
 name:           housegame
 version:        0.1.0.0
@@ -37,9 +37,11 @@ library
   hs-source-dirs:
       src
   build-depends:
-      array
+      QuickCheck
+    , array
     , base >=4.7 && <5
     , gloss
+    , hspec
     , random
     , random-shuffle
   default-language: Haskell2010
@@ -52,10 +54,12 @@ executable housegame-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      array
+      QuickCheck
+    , array
     , base >=4.7 && <5
     , gloss
     , housegame
+    , hspec
     , random
     , random-shuffle
   default-language: Haskell2010
@@ -69,10 +73,12 @@ test-suite housegame-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      array
+      QuickCheck
+    , array
     , base >=4.7 && <5
     , gloss
     , housegame
+    , hspec
     , random
     , random-shuffle
   default-language: Haskell2010
