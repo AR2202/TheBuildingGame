@@ -8,7 +8,7 @@ import System.Random
 import System.Random.Shuffle
 
 data Winning = Winning|Losing  deriving (Eq, Show)
-data Shape = Square | LTriangle | RTriangle | Window deriving (Eq,Show)
+data Shape = Square | LTriangle | RTriangle | RDownTriangle | LDownTriangle | Window deriving (Eq,Show)
 type Cell = Maybe Shape
 data State = Running | GameOver (Winning) deriving (Eq, Show)
 
@@ -56,7 +56,7 @@ initialGame solutionshapeslist  gen = Game { gameBoard = array indexRange $ zip 
                    , gameShape = head shapelist
                    , gameState = Running
                    , shapeList = tail shapelist
-                   , gameSolution = (solution solutionshapes)
+                   , gameSolution = solution solutionshapes
                    , solutionShapes = solutionshapes
                    , nextSolutions = nextsolutions
                    , nextRandomGen = nextGen gen
@@ -67,7 +67,7 @@ initialGame solutionshapeslist  gen = Game { gameBoard = array indexRange $ zip 
           shapelist = concat $repeat$solution2shapelist (currentGen gen) solutionshapes
 
 transposed :: [(a,b)]->[(b,a)]
-transposed tuplelist = map swap tuplelist
+transposed  = map swap 
 
 solution shapelist = array indexRange $ zip (transposed (range indexRange))(shapelist ++ repeat Nothing)
     where indexRange = ((0, 0), (n - 1, n - 1))

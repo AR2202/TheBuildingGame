@@ -15,13 +15,16 @@ losingColor = greyN 0.5
 
 shapeColor Square = squareColor
 shapeColor LTriangle = triangleColor
-shapeColor RTriangle = triangleRColor
+shapeColor RTriangle = triangleColor
+shapeColor RDownTriangle = triangleColor
 shapeColor Window = triangleRColor
 
 boardAsRunningPicture game  =
     pictures [ color squareColor $ squareCellsOfBoard board
              , color triangleColor $ triangleCellsOfBoard board
-             , color triangleRColor $ triangleRCellsOfBoard board
+             , color triangleColor $ triangleRCellsOfBoard board
+             , color triangleColor $ triangleRDownCellsOfBoard board
+             , color triangleColor $ triangleLDownCellsOfBoard board
              , color triangleRColor $ windowCellsOfBoard board
              , color freeFieldColor $ freeFields freeFieldPicture
              , color (shapeColor player) $ indicationSquare (indicationPicture player)
@@ -64,13 +67,17 @@ freeFields picture = translate x y picture
         y = fromIntegral 2 * cellHeight + cellHeight * 0.5
 
 --indicationPicture :: Picture
-indicationPicture Square= squareCell
+indicationPicture Square = squareCell
  
-indicationPicture LTriangle= triangleCellL
+indicationPicture LTriangle = triangleCellL
   
-indicationPicture RTriangle= triangleCellR
+indicationPicture RTriangle = triangleCellR
+
+indicationPicture RDownTriangle = triangleCellDownR
+
+indicationPicture LDownTriangle = triangleCellDownL
  
-indicationPicture Window= windowCell
+indicationPicture Window = windowCell
   
 
 suggestedPicture :: [Maybe Shape]->[Picture]
@@ -110,6 +117,12 @@ triangleCellL = trianglePicL (cellHeight * 0.75)
 
 triangleCellR :: Picture
 triangleCellR =  trianglePicR (cellHeight * 0.75)
+
+triangleCellDownR :: Picture
+triangleCellDownR =  trianglePicDownR (cellHeight * 0.75)
+
+triangleCellDownL :: Picture
+triangleCellDownL =  trianglePicDownL (cellHeight * 0.75)
          
 triangleCellM :: Picture
 triangleCellM = polygon [(-halfside,-halfside),(halfside,-halfside),(0,halfside),(-halfside,-halfside)]
@@ -121,6 +134,12 @@ trianglePicL  size = polygon [(-0.5 * size ,-0.5* size),(0.5 * size,-0.5 * size)
 
 trianglePicR :: Float ->Picture
 trianglePicR size = polygon [(-0.5*size,-0.5*size),(0.5 * size,-0.5*size),(-0.5*size,0.5*size),(-0.5*size,-0.5*size)]
+
+trianglePicDownL :: Float ->Picture
+trianglePicDownL size = polygon [(-0.5*size,0.5*size),(0.5 * size,0.5*size),(-0.5*size,-0.5*size),(-0.5*size,0.5*size)]
+
+trianglePicDownR :: Float ->Picture
+trianglePicDownR size = polygon [(-0.5*size,0.5*size),(0.5 * size,0.5*size),(0.5*size,-0.5*size),(-0.5*size,0.5*size)]
 
 
 squarePic :: Float -> Picture
@@ -155,6 +174,12 @@ triangleCellsOfBoard board = cellsOfBoard board (Just LTriangle) triangleCellL
 
 triangleRCellsOfBoard :: Board -> Picture
 triangleRCellsOfBoard board = cellsOfBoard board (Just RTriangle ) triangleCellR
+
+triangleRDownCellsOfBoard :: Board -> Picture
+triangleRDownCellsOfBoard board = cellsOfBoard board (Just RDownTriangle ) triangleCellDownR
+
+triangleLDownCellsOfBoard :: Board -> Picture
+triangleLDownCellsOfBoard board = cellsOfBoard board (Just LDownTriangle ) triangleCellDownL
 
 boardGrid :: Picture
 boardGrid =
