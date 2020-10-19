@@ -8,7 +8,7 @@ import System.Random
 import System.Random.Shuffle
 
 data Winning = Winning|Losing  deriving (Eq, Show)
-data Shape = Square | LTriangle | RTriangle | RDownTriangle | LDownTriangle | Window deriving (Eq,Show)
+data Shape = Square | LTriangle | RTriangle | RDownTriangle | LDownTriangle | Window | CircleS | SemiCircle | SemiCircleR | SemiCircleL | SemiCircleDown deriving (Eq,Show)
 type Cell = Maybe Shape
 data State = Running | GameOver (Winning) deriving (Eq, Show)
 
@@ -104,5 +104,6 @@ shapelist9 = [Just Square, Just Square, Just Square, Just LTriangle, Nothing, Ju
 
 shapelist10 = [Just Square, Just Square, Just Square, Just LTriangle, Nothing, Just Square, Just Square, Just Square, Just Window, Just LTriangle, Just Square, Just Square,Just Square,Just Window, Just RTriangle, Just Square, Just Square, Just Square, Just Square, Just Square]
 
+shapelist11 = [Just Square, Just Square, Just SemiCircleL, Just Square, Just SemiCircle, Just Square, Just Square, Just Square, Just CircleS, Just SemiCircle, Just Square, Just LDownTriangle,Just Square,Just CircleS, Just SemiCircle, Just SemiCircleDown, Just Square, Just SemiCircleR, Just Square, Nothing]
 
-solutionlist = concat $ repeat [shapelist7,shapelist1, shapelist2, shapelist10,shapelist9,shapelist3, shapelist4, shapelist5, shapelist6,shapelist8]
+solutionlist = concat $ repeat [shapelist11, shapelist7,shapelist1, shapelist2, shapelist10,shapelist9,shapelist3, shapelist4, shapelist5, shapelist6,shapelist8]

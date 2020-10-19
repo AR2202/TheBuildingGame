@@ -9,15 +9,21 @@ import Game
 boardGridColor = makeColorI 255 255 255 255
 squareColor = makeColorI 255 50 50 255
 triangleColor = makeColorI 50 100 255 255
+circleColor = makeColorI 100 255 255 100
+semiCircleColor = makeColorI 255 255 0 255
 triangleRColor = makeColorI 50 255 50 255
 freeFieldColor = makeColorI 255 255 255 255
 losingColor = greyN 0.5
 
 shapeColor Square = squareColor
-shapeColor LTriangle = triangleColor
-shapeColor RTriangle = triangleColor
 shapeColor RDownTriangle = triangleColor
 shapeColor Window = triangleRColor
+shapeColor CircleS = circleColor
+shapeColor SemiCircle = semiCircleColor
+shapeColor SemiCircleR = semiCircleColor
+shapeColor SemiCircleL = semiCircleColor
+shapeColor SemiCircleDown = semiCircleColor
+shapeColor _ = triangleColor
 
 boardAsRunningPicture game  =
     pictures [ color squareColor $ squareCellsOfBoard board
@@ -26,6 +32,11 @@ boardAsRunningPicture game  =
              , color triangleColor $ triangleRDownCellsOfBoard board
              , color triangleColor $ triangleLDownCellsOfBoard board
              , color triangleRColor $ windowCellsOfBoard board
+             , color circleColor $ circleCellsOfBoard board
+             , color semiCircleColor $ semiCircleCellsOfBoard board
+             , color semiCircleColor $ semiCircleCellsROfBoard board
+             , color semiCircleColor $ semiCircleCellsLOfBoard board
+             , color semiCircleColor $ semiCircleCellsDownOfBoard board
              , color freeFieldColor $ freeFields freeFieldPicture
              , color (shapeColor player) $ indicationSquare (indicationPicture player)
              , color triangleColor $ indicationText textPicture
@@ -78,6 +89,16 @@ indicationPicture RDownTriangle = triangleCellDownR
 indicationPicture LDownTriangle = triangleCellDownL
  
 indicationPicture Window = windowCell
+
+indicationPicture CircleS =circleCell
+
+indicationPicture SemiCircle = semiCircleCell
+
+indicationPicture SemiCircleR = semiCircleCellR
+
+indicationPicture SemiCircleL = semiCircleCellL
+
+indicationPicture SemiCircleDown = semiCircleCellDown
   
 
 suggestedPicture :: [Maybe Shape]->[Picture]
@@ -110,6 +131,22 @@ squareCell = squarePic (cellHeight * 0.75)
 
 windowCell :: Picture
 windowCell = windowPic (cellHeight * 0.75)
+
+circleCell :: Picture
+circleCell = circlePic (cellHeight *0.75)
+
+semiCircleCell :: Picture
+semiCircleCell = semiCirclePic (cellHeight *0.75)
+
+semiCircleCellR :: Picture
+semiCircleCellR = semiCirclePicR (cellHeight *0.75)
+
+semiCircleCellL :: Picture
+semiCircleCellL = semiCirclePicL (cellHeight *0.75)
+
+semiCircleCellDown :: Picture
+semiCircleCellDown = semiCirclePicDown (cellHeight *0.75)
+
 
 triangleCellL :: Picture
 triangleCellL = trianglePicL (cellHeight * 0.75)
@@ -147,7 +184,22 @@ squarePic size = rectangleSolid size size
 
 windowPic :: Float ->Picture
 windowPic size = rectangleWire size size
-                 
+
+circlePic :: Float -> Picture
+circlePic size = circle (0.5*size)
+
+semiCirclePic :: Float -> Picture
+semiCirclePic size = arc  0 180 (0.5*size)
+
+semiCirclePicR :: Float -> Picture
+semiCirclePicR size = arc  90 270 (0.5*size)
+
+semiCirclePicL :: Float -> Picture
+semiCirclePicL size = arc  270 90 (0.5*size)
+
+semiCirclePicDown :: Float -> Picture
+semiCirclePicDown size = arc  180 360 (0.5*size)
+
 noPic :: Float ->Picture
 noPic _ = rectangleWire 0 0
  
@@ -181,6 +233,21 @@ triangleRDownCellsOfBoard board = cellsOfBoard board (Just RDownTriangle ) trian
 triangleLDownCellsOfBoard :: Board -> Picture
 triangleLDownCellsOfBoard board = cellsOfBoard board (Just LDownTriangle ) triangleCellDownL
 
+circleCellsOfBoard :: Board -> Picture
+circleCellsOfBoard board = cellsOfBoard board (Just CircleS ) circleCell
+
+semiCircleCellsOfBoard :: Board -> Picture
+semiCircleCellsOfBoard board = cellsOfBoard board (Just SemiCircle ) semiCircleCell
+
+semiCircleCellsROfBoard :: Board -> Picture
+semiCircleCellsROfBoard board = cellsOfBoard board (Just SemiCircleR ) semiCircleCellR
+
+semiCircleCellsLOfBoard :: Board -> Picture
+semiCircleCellsLOfBoard board = cellsOfBoard board (Just SemiCircleL) semiCircleCellL
+
+semiCircleCellsDownOfBoard :: Board -> Picture
+semiCircleCellsDownOfBoard board = cellsOfBoard board (Just SemiCircleDown ) semiCircleCellDown
+
 boardGrid :: Picture
 boardGrid =
     pictures
@@ -198,15 +265,27 @@ boardGrid =
 gameShape2ShapeFunction (Just Square) = squarePic
 gameShape2ShapeFunction (Just LTriangle) = trianglePicL
 gameShape2ShapeFunction (Just RTriangle) = trianglePicR
+gameShape2ShapeFunction (Just LDownTriangle) = trianglePicDownL
 gameShape2ShapeFunction (Just Window) = windowPic
+gameShape2ShapeFunction (Just CircleS) = circlePic
+gameShape2ShapeFunction (Just SemiCircle) = semiCirclePic
+gameShape2ShapeFunction (Just SemiCircleR) = semiCirclePicR
+gameShape2ShapeFunction (Just SemiCircleL) = semiCirclePicL
+gameShape2ShapeFunction (Just SemiCircleDown) = semiCirclePicDown
 gameShape2ShapeFunction Nothing = noPic
 
 boardAsPicture game winning=
     pictures [ squareCellsOfBoard board
              , triangleCellsOfBoard board
              , triangleRCellsOfBoard board
-             
+             , triangleRDownCellsOfBoard board
+             , triangleLDownCellsOfBoard board
              , windowCellsOfBoard board
+             , circleCellsOfBoard board
+             , semiCircleCellsOfBoard board
+             , semiCircleCellsROfBoard board
+             , semiCircleCellsLOfBoard board
+             , semiCircleCellsDownOfBoard board
              , color freeFieldColor $freeFields freeFieldPicture
              , indicationText (textGameOver winning)
               , color triangleColor $ suggestedText textNext

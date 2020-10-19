@@ -78,6 +78,10 @@ turnRight (Just LTriangle) = Just RTriangle
 turnRight (Just RTriangle) = Just LDownTriangle
 turnRight (Just LDownTriangle) = Just RDownTriangle
 turnRight (Just RDownTriangle) = Just LTriangle
+turnRight (Just SemiCircle) = Just SemiCircleL
+turnRight (Just SemiCircleL) = Just SemiCircleDown
+turnRight (Just SemiCircleDown) = Just SemiCircleR
+turnRight (Just SemiCircleR) = Just SemiCircle
 turnRight x = x
 
 turnShapeLeft :: Game -> (Int, Int) -> Game
@@ -96,6 +100,10 @@ turnLeft (Just RTriangle) = Just LTriangle
 turnLeft (Just LTriangle) = Just RDownTriangle
 turnLeft (Just RDownTriangle) = Just LDownTriangle
 turnLeft (Just LDownTriangle) = Just RTriangle
+turnLeft (Just SemiCircle) = Just SemiCircleR
+turnLeft (Just SemiCircleR) = Just SemiCircleDown
+turnLeft (Just SemiCircleDown) = Just SemiCircleL
+turnLeft (Just SemiCircleL) = Just SemiCircle
 turnLeft x = x
 
 
