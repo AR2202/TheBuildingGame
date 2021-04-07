@@ -9,6 +9,7 @@ import Data.Maybe (fromJust, isJust, isNothing)
 
 isCoordCorrect = inRange ((0, 0), (n - 1, n - 2))
 
+isSelectNewGame = inRange ((2, n - 1), (2, n - 1))
 
 
 switchShape' game = game {gameShape = head (shapeList game), shapeList = tail (shapeList game)}
@@ -46,6 +47,7 @@ playerTurn game cellCoord
         checkGameOver2
         $ switchShape'
         $ game { gameBoard = board // [(cellCoord, Just shape)] }
+    |isSelectNewGame cellCoord = initialGame (nextSolutions game) (nextRandomGen game)
     | otherwise = game
     where board = gameBoard game
           shape = gameShape game

@@ -39,6 +39,7 @@ boardAsRunningPicture game  =
              , color semiCircleColor $ semiCircleCellsDownOfBoard board
              , color freeFieldColor $ freeFields freeFieldPicture
              , color (shapeColor player) $ indicationSquare (indicationPicture player)
+             , color triangleColor $ nextText textNext
              , color triangleColor $ indicationText textPicture
              , color triangleColor $ suggestedText textSuggested
              , color triangleColor $ pictures $ suggested (suggestedPicture solutionshapes) (suggestedpos 5 4)
@@ -69,6 +70,10 @@ suggested pictures xylist = zipWith (uncurry translate ) xylist pictures
       
 
 suggestedText picture = translate x y picture
+  where x = fromIntegral 4 * cellWidth 
+        y = fromIntegral 1 * cellHeight + cellHeight * 0.5
+
+nextText picture = translate x y picture
   where x = fromIntegral 4 * cellWidth 
         y = fromIntegral 2 * cellHeight + cellHeight * 0.5
 
