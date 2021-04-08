@@ -62,6 +62,7 @@ initialGame solutionshapeslist  gen = Game { gameBoard = array indexRange $ zip 
                    , nextRandomGen = nextGen gen
                    }
     where indexRange = ((0, 0), (n - 1, n - 1))
+          shuffledSolutions = solutionlistShuffled gen
           solutionshapes = head solutionshapeslist
           nextsolutions =  tail solutionshapeslist
           shapelist = concat $repeat$solution2shapelist (currentGen gen) solutionshapes
@@ -72,7 +73,7 @@ transposed  = map swap
 solution shapelist = array indexRange $ zip (transposed (range indexRange))(shapelist ++ repeat Nothing)
     where indexRange = ((0, 0), (n - 1, n - 1))
 
-randomGenStd = currentGen$ mkStdGen 42 
+randomGenStd num = currentGen$ mkStdGen num
 
 nextGen = fst . split
 
@@ -106,4 +107,9 @@ shapelist10 = [Just Square, Just Square, Just Square, Just LTriangle, Nothing, J
 
 shapelist11 = [Just Square, Just Square, Just SemiCircleL, Just Square, Just SemiCircle, Just Square, Just Square, Just Square, Just CircleS, Just SemiCircle, Just Square, Just LDownTriangle,Just Square,Just CircleS, Just SemiCircle, Just SemiCircleDown, Just Square, Just SemiCircleR, Just Square, Nothing]
 
+shapelist12 = [Just CircleS, Just Square, Nothing, Nothing, Nothing, Nothing, Just Square, Just SemiCircleR, Nothing, Nothing, Nothing, Just Square,Just Window, Nothing,Nothing, Just CircleS, Just Square,  Just Window, Nothing, Nothing]
+
 solutionlist = concat $ repeat [shapelist11, shapelist7,shapelist1, shapelist2, shapelist10,shapelist9,shapelist3, shapelist4, shapelist5, shapelist6,shapelist8]
+
+solutionlistShuffled gen = concat $ repeat $ shuffle' shapeslist (length shapeslist) gen
+  where shapeslist = [shapelist11, shapelist7,shapelist1, shapelist2, shapelist10,shapelist9,shapelist3, shapelist4, shapelist5, shapelist6,shapelist8,shapelist12]
