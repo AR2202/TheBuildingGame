@@ -9,7 +9,7 @@ import Data.Maybe (fromJust, isJust, isNothing)
 
 isCoordCorrect = inRange ((0, 0), (n - 1, n - 2))
 
-isSelectNewGame = inRange ((2, n - 1), (2, n - 1))
+isSelectNewGame = (==) (2, n - 1)
 
 
 switchShape' game = game {gameShape = head (shapeList game), shapeList = tail (shapeList game)}

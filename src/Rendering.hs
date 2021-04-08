@@ -40,6 +40,9 @@ boardAsRunningPicture game  =
              , color freeFieldColor $ freeFields freeFieldPicture
              , color (shapeColor player) $ indicationSquare (indicationPicture player)
              , color triangleColor $ nextText textNext
+             , color triangleColor $ turn1Text textTurn1
+             , color triangleColor $ turn2Text textTurn2
+             , color triangleColor $ quitText textQuit
              , color triangleColor $ indicationText textPicture
              , color triangleColor $ suggestedText textSuggested
              , color triangleColor $ pictures $ suggested (suggestedPicture solutionshapes) (suggestedpos 5 4)
@@ -64,6 +67,10 @@ indicationSquare picture = translate x y picture
 
 indicationText picture = translate x y picture
   where x = fromIntegral 4 * cellWidth 
+        y = fromIntegral 4 * cellHeight
+
+quitText picture = translate x y picture
+  where x = fromIntegral 4 * cellWidth
         y = fromIntegral 4 * cellHeight + cellHeight * 0.5
 
 suggested pictures xylist = zipWith (uncurry translate ) xylist pictures
@@ -75,14 +82,22 @@ suggestedText picture = translate x y picture
 
 nextText picture = translate x y picture
   where x = fromIntegral 4 * cellWidth 
-        y = fromIntegral 2 * cellHeight + cellHeight * 0.5
+        y = fromIntegral 2 * cellHeight + cellHeight * 0.25
 
+turn1Text picture = translate x y picture
+  where x = fromIntegral 4 * cellWidth
+        y = fromIntegral 2 * cellHeight + cellHeight * 0.8
+        
+turn2Text picture = translate x y picture
+  where x = fromIntegral 4 * cellWidth
+        y = fromIntegral 2 * cellHeight + cellHeight * 0.6
 
 freeFields picture = translate x y picture
   where x = fromIntegral 4 * cellWidth + cellWidth * 0.5
         y = fromIntegral 2 * cellHeight + cellHeight * 0.5
 
---indicationPicture :: Picture
+
+
 indicationPicture Square = squareCell
  
 indicationPicture LTriangle = triangleCellL
@@ -126,8 +141,16 @@ textSuggested = scale 0.18 0.18 $ text "build this:"
 textNext :: Picture
 textNext = scale 0.18 0.18 $ text "Next game"
 
+textTurn1 :: Picture
+textTurn1 = scale 0.18 0.18 $ text "use arrows"
 
-textGameOver ::Winning ->  Picture
+textTurn2 :: Picture
+textTurn2= scale 0.18 0.18 $ text "to turn"
+
+textQuit :: Picture
+textQuit = scale 0.18 0.18 $ text "quit: esc"
+
+textGameOver :: Winning ->  Picture
 textGameOver Winning = scale 0.18 0.18 $ text "You win!"
 textGameOver Losing = scale 0.18 0.18 $ text "Game over"
 
@@ -138,7 +161,7 @@ windowCell :: Picture
 windowCell = windowPic (cellHeight * 0.75)
 
 circleCell :: Picture
-circleCell = circlePic (cellHeight *0.75)
+circleCell = circlePic (cellHeight * 0.75)
 
 semiCircleCell :: Picture
 semiCircleCell = semiCirclePic (cellHeight *0.75)
