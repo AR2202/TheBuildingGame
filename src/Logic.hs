@@ -16,7 +16,7 @@ switchShape' game = game {gameShape = head (shapeList game), shapeList = tail (s
 
 full :: [Cell] -> Maybe Shape
 full (cell@(Just shape):cells) | all (== cell) cells = Just shape
-full _                                                = Nothing
+full _                                               = Nothing
 
 
 winner2 :: Board -> Board -> Maybe (Winning)
@@ -76,37 +76,36 @@ turnShapeRight game cellCoord
           currentShapes=shapeList game
 
 turnRight :: Cell -> Cell
-turnRight (Just LTriangle) = Just RTriangle
-turnRight (Just RTriangle) = Just LDownTriangle
-turnRight (Just LDownTriangle) = Just RDownTriangle
-turnRight (Just RDownTriangle) = Just LTriangle
-turnRight (Just SemiCircle) = Just SemiCircleL
-turnRight (Just SemiCircleL) = Just SemiCircleDown
+turnRight (Just LTriangle)      = Just RTriangle
+turnRight (Just RTriangle)      = Just LDownTriangle
+turnRight (Just LDownTriangle)  = Just RDownTriangle
+turnRight (Just RDownTriangle)  = Just LTriangle
+turnRight (Just SemiCircle)     = Just SemiCircleL
+turnRight (Just SemiCircleL)    = Just SemiCircleDown
 turnRight (Just SemiCircleDown) = Just SemiCircleR
-turnRight (Just SemiCircleR) = Just SemiCircle
+turnRight (Just SemiCircleR)    = Just SemiCircle
 turnRight x = x
 
 turnShapeLeft :: Game -> (Int, Int) -> Game
 turnShapeLeft game cellCoord
     | isCoordCorrect cellCoord && isJust turnedShape  =
         checkGameOver2
-        
         $ game { gameBoard = board // [(cellCoord, turnLeft turnedShape)] }
     | otherwise = game
     where board = gameBoard game
-          turnedShape=getCellShape game cellCoord
-          currentShapes=shapeList game
+          turnedShape = getCellShape game cellCoord
+          currentShapes = shapeList game
          
 turnLeft :: Cell -> Cell
-turnLeft (Just RTriangle) = Just LTriangle
-turnLeft (Just LTriangle) = Just RDownTriangle
-turnLeft (Just RDownTriangle) = Just LDownTriangle
-turnLeft (Just LDownTriangle) = Just RTriangle
-turnLeft (Just SemiCircle) = Just SemiCircleR
-turnLeft (Just SemiCircleR) = Just SemiCircleDown
+turnLeft (Just RTriangle)      = Just LTriangle
+turnLeft (Just LTriangle)      = Just RDownTriangle
+turnLeft (Just RDownTriangle)  = Just LDownTriangle
+turnLeft (Just LDownTriangle)  = Just RTriangle
+turnLeft (Just SemiCircle)     = Just SemiCircleR
+turnLeft (Just SemiCircleR)    = Just SemiCircleDown
 turnLeft (Just SemiCircleDown) = Just SemiCircleL
-turnLeft (Just SemiCircleL) = Just SemiCircle
-turnLeft x = x
+turnLeft (Just SemiCircleL)    = Just SemiCircle
+turnLeft x                     = x
 
 
 
@@ -135,6 +134,7 @@ transformGame (EventKey (SpecialKey KeyRight) Up _ mousePos) game =
     case gameState game of
       Running -> turnShapeRight game $ mousePosAsCellCoord mousePos
       GameOver _ -> initialGame (nextSolutions game) (nextRandomGen game)
+      
 transformGame _ game = game
 
 

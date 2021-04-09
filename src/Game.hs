@@ -8,7 +8,7 @@ import System.Random
 import System.Random.Shuffle
 
 data Winning = Winning|Losing  deriving (Eq, Show)
-data Shape = Square | LTriangle | RTriangle | RDownTriangle | LDownTriangle | Window | CircleS | SemiCircle | SemiCircleR | SemiCircleL | SemiCircleDown deriving (Eq,Show)
+data Shape = Square | LTriangle | RTriangle | RDownTriangle | LDownTriangle | Window | CircleS | SemiCircle | SemiCircleR | SemiCircleL | SemiCircleDown deriving (Eq, Show)
 type Cell = Maybe Shape
 data State = Running | GameOver (Winning) deriving (Eq, Show)
 
@@ -29,10 +29,6 @@ data Game = Game { gameBoard :: Board
 n :: Int
 n = 5
 
-randomtest :: IO ()
-randomtest = do
-  (randomnum :: Int) <-randomRIO (0,20)
-  print randomnum
 
 screenWidth :: Int
 screenWidth = 640
