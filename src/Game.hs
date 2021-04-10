@@ -15,6 +15,7 @@ data State = Running | GameOver (Winning) deriving (Eq, Show)
 type Board = Array (Int, Int) Cell
 type Solution = [Cell]
 type Solutionlist = [Solution]
+type Position = (Float,Float)
 
 data Game = Game { gameBoard :: Board
                  , gameShape :: Shape

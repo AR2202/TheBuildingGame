@@ -26,27 +26,34 @@ shapeColor SemiCircleDown = semiCircleColor
 shapeColor _              = triangleColor
 
 boardAsRunningPicture game  =
-    pictures [ color squareColor $ picCellOfBoard board Square
-             , color triangleColor $ picCellOfBoard board LTriangle
-             , color triangleColor $ picCellOfBoard board RTriangle
-             , color triangleRColor $ picCellOfBoard board Window
-             , color circleColor $ picCellOfBoard board CircleS
-             , color semiCircleColor $ picCellOfBoard board SemiCircle
-             , color semiCircleColor $ picCellOfBoard board SemiCircleR
-             , color semiCircleColor $ picCellOfBoard board SemiCircleL
-             , color semiCircleColor $ picCellOfBoard board SemiCircleDown
-             , color freeFieldColor $ freeFields freeFieldPicture
-             , color (shapeColor shape) $ indicationSquare (indicationPicture shape)
-             , color triangleColor $ nextText textNext
-             , color triangleColor $ turn1Text textTurn1
-             , color triangleColor $ turn2Text textTurn2
-             , color triangleColor $ quitText textQuit
-             , color triangleColor $ indicationText textPicture
-             , color triangleColor $ suggestedText textSuggested
+    pictures $
+             [ color freeFieldColor $ freeFields freeFieldPicture
              , color triangleColor $ pictures $ suggested (suggestedPicture solutionshapes) (suggestedpos 5 4)
-             
              , color boardGridColor $ boardGrid
+             , color (shapeColor shape) $ indicationSquare (indicationPicture shape)
              ]
+             ++
+             map (boardPictures board)
+             
+             [ Right Square
+             , Right LTriangle
+             , Right RDownTriangle
+             , Right LDownTriangle
+             , Right RTriangle
+             , Right Window
+             , Right CircleS
+             , Right SemiCircle
+             , Right SemiCircleR
+             , Right SemiCircleL
+             , Right SemiCircleDown
+             , Left (nextTexty, "next game")
+             , Left (turn1Texty, "use arrow keys")
+             , Left (turn2Texty, "to turn")
+             , Left (quitTexty, "quit: esc")
+             , Left (indicationTexty, "next shape")
+             , Left (suggestedTexty, "build this") 
+             ]
+             
   where board = gameBoard game
         solutionshapes = solutionShapes game
         shape = gameShape game
@@ -54,22 +61,38 @@ boardAsRunningPicture game  =
 outcomeColor Winning = triangleColor
 outcomeColor Losing = losingColor
 
+boardPictures :: Board -> Either (Float, String) Shape -> Picture
+boardPictures _ (Left (ypos, string))  = color triangleColor $ positionText string ypos
+boardPictures board (Right shape)  = color (shapeColor shape) $ picCellOfBoard board shape
 
 snapPictureToCell picture (row, column) = translate x y picture
     where x = fromIntegral column * cellWidth + cellWidth * 0.5
           y = fromIntegral row * cellHeight + cellHeight * 0.5
 
+positionText text cellsy = translate x y $ textpicture
+  where x = fromIntegral 4 * cellWidth
+        y = cellsy * cellHeight
+        textpicture = textPic text
+        
 indicationSquare picture = translate x y picture
   where x = fromIntegral 4 * cellWidth + cellWidth * 0.5
         y = fromIntegral 3 * cellHeight + cellHeight * 0.5
 
-indicationText picture = translate x y picture
-  where x = fromIntegral 4 * cellWidth 
-        y = fromIntegral 4 * cellHeight
 
-quitText picture = translate x y picture
-  where x = fromIntegral 4 * cellWidth
-        y = fromIntegral 4 * cellHeight + cellHeight * 0.5
+
+quitTexty = 4.5
+
+suggestedTexty = 1.5
+
+nextTexty = 2.25
+
+turn1Texty = 2.8
+
+turn2Texty = 2.6
+
+indicationTexty = 4.0
+
+
 
 suggested pictures xylist = zipWith (uncurry translate ) xylist pictures
       
@@ -78,17 +101,7 @@ suggestedText picture = translate x y picture
   where x = fromIntegral 4 * cellWidth 
         y = fromIntegral 1 * cellHeight + cellHeight * 0.5
 
-nextText picture = translate x y picture
-  where x = fromIntegral 4 * cellWidth 
-        y = fromIntegral 2 * cellHeight + cellHeight * 0.25
 
-turn1Text picture = translate x y picture
-  where x = fromIntegral 4 * cellWidth
-        y = fromIntegral 2 * cellHeight + cellHeight * 0.8
-        
-turn2Text picture = translate x y picture
-  where x = fromIntegral 4 * cellWidth
-        y = fromIntegral 2 * cellHeight + cellHeight * 0.6
 
 freeFields picture = translate x y picture
   where x = fromIntegral 4 * cellWidth + cellWidth * 0.5
@@ -133,23 +146,10 @@ freeFieldPicture = rectangleSolid (side) (5.0 * side)
 textPic :: String -> Picture
 textPic string = scale 0.18 0.18 $ text string
 
-textPicture :: Picture
-textPicture =textPic "next shape"
-
-textSuggested :: Picture
-textSuggested = textPic "build this:"
 
 textNext :: Picture
 textNext = textPic  "Next game"
 
-textTurn1 :: Picture
-textTurn1 = textPic "use arrows"
-
-textTurn2 :: Picture
-textTurn2= textPic  "to turn"
-
-textQuit :: Picture
-textQuit = textPic "quit: esc"
 
 textGameOver :: Winning ->  Picture
 textGameOver Winning = textPic "You win!"
@@ -159,23 +159,29 @@ picSize :: Float
 picSize = cellHeight * 0.75
 
 
-         
-triangleCellM :: Picture
-triangleCellM = polygon [(-halfside,-halfside),(halfside,-halfside),(0,halfside),(-halfside,-halfside)]
-    where side = min cellWidth cellHeight * 0.75
-          halfside = side * 0.5
-
 trianglePicL :: Float -> Picture
-trianglePicL  size = polygon [(-0.5 * size ,-0.5* size),(0.5 * size,-0.5 * size),(0.5 * size,0.5*size),(-0.5*size,-0.5*size)]
+trianglePicL  size = polygon [(-0.5 * size, -0.5 * size)
+                             , (0.5 * size,-0.5 * size)
+                             , (0.5 * size,0.5*size)
+                             , (-0.5 * size, -0.5 * size)]
 
 trianglePicR :: Float -> Picture
-trianglePicR size = polygon [(-0.5*size,-0.5*size),(0.5 * size,-0.5*size),(-0.5*size,0.5*size),(-0.5*size,-0.5*size)]
+trianglePicR size = polygon [(-0.5 * size, -0.5 * size)
+                            , (0.5 * size, -0.5 * size)
+                            , (-0.5 * size, 0.5 * size)
+                            , (-0.5 * size, -0.5 * size)]
 
 trianglePicDownL :: Float -> Picture
-trianglePicDownL size = polygon [(-0.5*size,0.5*size),(0.5 * size,0.5*size),(-0.5*size,-0.5*size),(-0.5*size,0.5*size)]
+trianglePicDownL size = polygon [(-0.5 * size, 0.5 * size)
+                                , (0.5 * size, 0.5 * size)
+                                , (-0.5 * size, -0.5 * size)
+                                , (-0.5 * size, 0.5 * size)]
 
 trianglePicDownR :: Float -> Picture
-trianglePicDownR size = polygon [(-0.5*size,0.5*size),(0.5 * size,0.5*size),(0.5*size,-0.5*size),(-0.5*size,0.5*size)]
+trianglePicDownR size = polygon [(-0.5 * size, 0.5 * size)
+                                , (0.5 * size, 0.5 * size)
+                                , (0.5 * size, -0.5 * size)
+                                , (-0.5 * size, 0.5 * size)]
 
 
 squarePic :: Float -> Picture
@@ -185,19 +191,19 @@ windowPic :: Float -> Picture
 windowPic size = rectangleWire size size
 
 circlePic :: Float -> Picture
-circlePic size = circle (0.5*size)
+circlePic size = circle (0.5 * size)
 
 semiCirclePic :: Float -> Picture
-semiCirclePic size = arc  0 180 (0.5*size)
+semiCirclePic size = arc  0 180 (0.5 * size)
 
 semiCirclePicR :: Float -> Picture
-semiCirclePicR size = arc  90 270 (0.5*size)
+semiCirclePicR size = arc  90 270 (0.5 * size)
 
 semiCirclePicL :: Float -> Picture
-semiCirclePicL size = arc  270 90 (0.5*size)
+semiCirclePicL size = arc  270 90 (0.5 * size)
 
 semiCirclePicDown :: Float -> Picture
-semiCirclePicDown size = arc  180 360 (0.5*size)
+semiCirclePicDown size = arc  180 360 (0.5 * size)
 
 noPic :: Float -> Picture
 noPic _ = rectangleWire 0 0
@@ -286,10 +292,10 @@ boardAsPicture game winning =
              , semiCircleCellsLOfBoard board
              , semiCircleCellsDownOfBoard board
              , color freeFieldColor $freeFields freeFieldPicture
-             , indicationText (textGameOver winning)
-              , color triangleColor $ suggestedText textNext
+             , positionText "you win!" indicationTexty
+             , color triangleColor $ suggestedText textNext
              , pictures $ suggested (suggestedPicture solutionshapes)  (suggestedpos 5 4)
-             ,  color boardGridColor $boardGrid
+             , color boardGridColor $boardGrid
              ]
   where board = gameBoard game
         solutionshapes = solutionShapes game
