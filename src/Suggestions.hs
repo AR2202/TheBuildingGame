@@ -1,2 +1,1 @@
-module Suggestions
-  where
+module Suggestions where
